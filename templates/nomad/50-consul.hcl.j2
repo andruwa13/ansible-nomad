@@ -1,0 +1,10 @@
+consul {
+  address              = "127.0.0.1:8500"
+  auth                 = ""
+  checks_use_advertise = true
+  auto_advertise       = true
+  server_auto_join     = true
+  client_service_name  = "nomad-client"
+  server_Service_name  = "nomad-server"
+  token                = "{{ nomad['consul_token'] | default('') }}"
+}

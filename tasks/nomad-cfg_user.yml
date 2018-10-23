@@ -1,0 +1,15 @@
+#
+# Configures the nomad server user
+#
+---
+
+- name: nomad | create application user
+  become: true
+  user:
+    name: "{{ bin_name['nomad'] }}"
+    comment: "{{ bin_name['nomad'] }}"
+    state: present
+    system: true
+    shell: /bin/false
+    create_home: true
+    home: "{{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d"

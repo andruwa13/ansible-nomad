@@ -1,0 +1,54 @@
+#
+# Configures the nomad server
+#
+---
+
+- name: nomad | create service folders
+  become: true
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ bin_name['nomad'] }}"
+    group: "{{ bin_name['nomad'] }}"
+    mode: 0755
+  loop:
+  - "{{ base_dir['logs'] }}/{{ bin_name['nomad'] }}"
+  - "{{ base_dir['data'] }}/{{ bin_name['nomad'] }}"
+
+- name: nomad | generate service configurationfile
+  become: true
+  notify:
+  - reload_systemd_daemon
+  - restart_unit_nomad
+  template:
+    dest: "{{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d/{{ item }}"
+    src: "{{ bin_name['nomad'] }}/{{ item }}.j2"
+    owner: "{{ bin_name['nomad'] }}"
+    group: "{{ bin_name['nomad'] }}"
+    mode: 0640
+  loop:
+  - 50-nomad.hcl
+
+- name: nomad | create systemd unit
+  become: true
+  notify:
+  - reload_systemd_daemon
+  - restart_unit_nomad
+  template:
+    dest: "{{ base_dir['systemd'] }}/{{ item }}"
+    src: "{{ bin_name['nomad'] }}/systemd/{{ item }}.j2"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+  - nomad.service
+
+- name: nomad | start and enable unit
+  become: true
+  notify:
+  - reload_systemd_daemon
+  systemd:
+    name: nomad
+    state: started
+    enabled: yes
+    masked: no

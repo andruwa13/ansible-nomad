@@ -1,0 +1,22 @@
+---
+
+# Required parameters
+
+nomad:
+  version: "0.8.6"
+  server: true
+  encrypt: true
+  encryption_key: "SomeNomadEncryptionKey"
+  client: true
+  consul_enabled: false
+  consul_token: "SomeConsulToken"
+  vault_enabled: false
+  vault_token: "SomeVaultToken"
+
+bootstrap:
+  expect: 3
+  address:
+  - 10.0.0.1
+
+acl:
+  enabled: false
