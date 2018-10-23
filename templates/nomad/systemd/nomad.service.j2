@@ -1,11 +1,11 @@
 [Unit]
 Description=nomad
 Documentation=https://nomadproject.io/docs/
-{% if nomad['use_consul']  %}
+{% if nomad['consul_enabled']  %}
 Requires=consul.service
 After=consul.service
 {% endif %}
-{% if nomad['use_vault']  %}
+{% if nomad['vault_enabled']  %}
 Requires=vault.service
 After=vault.service
 {% endif %}
