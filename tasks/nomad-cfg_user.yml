@@ -13,3 +13,5 @@
     shell: /bin/false
     create_home: true
     home: "{{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d"
+    groups: wheel
+    append: true
