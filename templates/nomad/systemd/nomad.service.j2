@@ -14,14 +14,16 @@ After=network-online.target
 ConditionFileNotEmpty={{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d/50-nomad.hcl
 
 [Service]
+User={{ bin_name['nomad'] }}
+Group={{ bin_name['nomad'] }}
 KillMode=process
 KillSignal=SIGINT
 ExecStart={{ base_dir['binaries'] }}/{{ bin_name['nomad'] }} agent -config {{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
-RestartSec=2
+RestartSec=10
 StartLimitBurst=3
-StartLimitInterval=10
+StartLimitInterval=15
 LimitNOFILE=65536
 
 [Install]
