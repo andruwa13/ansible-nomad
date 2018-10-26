@@ -16,9 +16,15 @@ ConditionFileNotEmpty={{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d/50-nom
 [Service]
 User={{ bin_name['nomad'] }}
 Group={{ bin_name['nomad'] }}
+PermissionsStartOnly=true
+ExecStartPre=-/bin/mkdir -p {{ base_dir['binaries'] }}/{{ bin_name['nomad'] }}
+ExecStartPre=/bin/chown -R {{ bin_name['nomad'] }}:{{ bin_name['nomad'] }} {{ base_dir['binaries'] }}/{{ bin_name['nomad'] }}
+PidFile={{ base_dir['binaries'] }}/{{ bin_name['nomad'] }}/{{ bin_name['nomad'] }}.pid
 KillMode=process
 KillSignal=SIGINT
-ExecStart={{ base_dir['binaries'] }}/{{ bin_name['nomad'] }} agent -config {{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d
+ExecStart={{ base_dir['binaries'] }}/{{ bin_name['nomad'] }} agent \
+    -config {{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d \
+    -pid-file={{ base_dir['binaries'] }}/{{ bin_name['nomad'] }}/{{ bin_name['nomad'] }}.pid
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=10
