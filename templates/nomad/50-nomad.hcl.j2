@@ -30,6 +30,9 @@ client {
     memory = 1024
     disk   = 2048
   }
+  meta {
+    "manager" = "true"
+  }
 {% endif %}
 {% if not nomad['consul_enabled'] %}
   server_join {
