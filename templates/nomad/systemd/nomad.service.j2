@@ -14,17 +14,16 @@ After=network-online.target
 ConditionFileNotEmpty={{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d/50-nomad.hcl
 
 [Service]
+PermissionsStartOnly=True
 User={{ bin_name['nomad'] }}
 Group={{ bin_name['nomad'] }}
-PermissionsStartOnly=true
-ExecStartPre=-/bin/mkdir -p {{ base_dir['pid'] }}/{{ bin_name['nomad'] }}
-ExecStartPre=/bin/chown -R {{ bin_name['nomad'] }}:{{ bin_name['nomad'] }} {{ base_dir['pid'] }}/{{ bin_name['nomad'] }}
+RuntimeDirectory={{ bin_name['nomad'] }}
+RuntimeDirectoryMode=0755
 PidFile={{ base_dir['pid'] }}/{{ bin_name['nomad'] }}/{{ bin_name['nomad'] }}.pid
 KillMode=process
 KillSignal=SIGINT
 ExecStart={{ base_dir['binaries'] }}/{{ bin_name['nomad'] }} agent \
-    -config {{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d \
-    -pid-file={{ base_dir['pid'] }}/{{ bin_name['nomad'] }}/{{ bin_name['nomad'] }}.pid
+    -config {{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=10
