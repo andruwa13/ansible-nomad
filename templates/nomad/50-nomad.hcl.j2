@@ -24,15 +24,16 @@ server {
 
 client {
   enabled = {{ nomad['client'] | bool | lower }}
+  meta {
+    "deployer" = "ansible"
+  }
 {% if nomad['server'] %}
   reserved {
     cpu    = 1000
     memory = 1024
     disk   = 2048
   }
-  meta {
-    "manager" = "true"
-  }
+  node_class = "server"
 {% endif %}
 {% if not nomad['consul_enabled'] %}
   server_join {
