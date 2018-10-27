@@ -6,14 +6,21 @@ Requires=consul.service
 After=consul.service
 {% endif %}
 {% if nomad['vault_enabled']  %}
-Requires=vault.service
+Wants=vault.service
 After=vault.service
 {% endif %}
 Wants=network-online.target
 After=network-online.target
-ConditionFileNotEmpty={{ base_dir['configs'] }}/{{ bin_name['nomad'] }}.d/50-nomad.hcl
 
 [Service]
+User={{ bin_name['nomad'] }}
+Group={{ bin_name['nomad'] }}
+ConfigurationDirectory={{ bin_name['nomad'] }}.d # under /etc; persistent
+RuntimeDirectory={{ bin_name['nomad'] }} # under /var/run; non-persistent
+StateDirectory={{ bin_name['nomad'] }} # under /var/lib; persistent
+LogsDirectory={{ bin_name['nomad'] }} # under /var/logs; persistent
+CacheDirectory={{ bin_name['nomad'] }} # under /var/cache; persistent
+PidFile={{ base_dir['binaries'] }}/{{ bin_name['nomad'] }}/{{ bin_name['nomad'] }}.pid
 KillMode=process
 KillSignal=SIGINT
 ExecStart={{ base_dir['binaries'] }}/{{ bin_name['nomad'] }} agent \
