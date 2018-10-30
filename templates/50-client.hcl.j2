@@ -1,0 +1,25 @@
+client {
+  enabled = {{ nomad['client']['enabled'] | default(false) | bool | lower }}
+  options = {
+    "driver.blacklist" = "{{ nomad['driver_blacklist'] | default('') }}"
+  }
+  meta {
+    "managed_by" = "ansible"
+  }
+{% if nomad['server'] %}
+  node_class = "server"
+  reserved {
+    cpu    = 500
+    memory = 512
+    disk   = 2048
+  }
+{% else %}
+  node_class = "client"
+{% endif %}
+{% if not consul['enabled'] %}
+  server_join {
+    retry_join = {{ bootstrap['address'] | default('0.0.0.0') | to_json }}
+    retry_interval = "15s"
+  }
+{% endif %}
+}

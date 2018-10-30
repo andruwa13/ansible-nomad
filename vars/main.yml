@@ -4,8 +4,6 @@
 # ============================================
 
 hashicorp_base_url: "https://releases.hashicorp.com"
-bin_name:
-  nomad: "nomad"
 base_architecture_map:
   amd64: "amd64"
   x86_64: "amd64"
@@ -13,7 +11,7 @@ base_architecture_map:
 # Host-specific
 # ============================================
 
-host_architecture: "{{ base_architecture_map[ansible_architecture] | lower }}" # requires 'gather_facts' on hosts
-package_name_nomad: "{{ bin_name['nomad'] }}_{{ nomad['version'] }}_{{ ansible_system | lower }}_{{ host_architecture | lower }}"
-package_url_nomad:  "{{ hashicorp_base_url }}/{{ bin_name['nomad'] }}/{{ nomad['version'] }}/{{ package_name_nomad }}.zip"
-checksum_url_nomad: "{{ hashicorp_base_url }}/{{ bin_name['nomad'] }}/{{ nomad['version'] }}/{{ bin_name['nomad'] }}_{{ nomad['version'] }}_SHA256SUMS"
+host_architecture: "{{ base_architecture_map[ansible_architecture] | lower }}"
+package_name_nomad: "nomad_{{ nomad['version'] }}_{{ ansible_system | lower }}_{{ host_architecture | lower }}"
+package_url_nomad:  "{{ hashicorp_base_url }}/nomad/{{ nomad['version'] }}/{{ package_name_nomad }}.zip"
+checksum_url_nomad: "{{ hashicorp_base_url }}/nomad/{{ nomad['version'] }}/nomad_{{ nomad['version'] }}_SHA256SUMS"

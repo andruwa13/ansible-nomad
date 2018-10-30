@@ -1,0 +1,7 @@
+tls {
+  http      = "{{ tls['http'] | default(false) | bool | lower }}"
+  rpc       = "{{ tls['rpc'] | default(false) | bool | lower }}"
+  ca_file   = "{{ tls['files']['ca'] | default('') }}"
+  cert_file = "{{ tls['files']['cert'] | default('') }}"
+  key_file  = "{{ tls['files']['key'] | default('') }}"
+}

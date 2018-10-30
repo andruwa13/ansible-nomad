@@ -1,22 +1,49 @@
 ---
 
-# Required parameters
+## required settings
 
 nomad:
   version: "0.8.6"
   server: true
-  encrypt: true
-  encryption_key: "SomeNomadEncryptionKey"
-  client: true
-  consul_enabled: false
-  consul_token: "SomeConsulToken"
-  vault_enabled: false
-  vault_token: "SomeVaultToken"
+  client:
+    enabled: false
+    driver_blacklist: ""
 
 bootstrap:
   expect: 3
   address:
   - 10.0.0.1
+  - 10.0.0.2
+  - 10.0.0.3
+
+## Optional settings
+
+encryption:
+  enabled: false
+  key: "SomeNomadEncryptionKey"
+
+consul:
+  enabled: false
+  address: "127.0.0.1:8500"
+  token: "SomeConsulToken"
+
+vault:
+  enabled: false
+  address: "127.0.0.1:8200"
+  token: "SomeVaultToken"
 
 acl:
   enabled: false
+  token: "SomeACLToken"
+
+tls:
+  http: false
+  rpc: false
+  files:
+    ca: "/etc/certs/ca.crt"
+    cert: "/etc/certs/nomad.crt"
+    key: "/etc/certs/nomad.key"
+
+telemetry:
+  interval: "5s"
+  prometheus: false

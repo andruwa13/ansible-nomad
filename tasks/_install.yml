@@ -1,0 +1,15 @@
+---
+
+- name: nomad | extract binary
+  become: true
+  unarchive:
+    src: "{{ base_dir['downloads'] }}/{{ package_name_nomad }}.zip"
+    dest: "{{ base_dir['packages'] }}/nomad/{{ nomad['version'] }}"
+    remote_src: yes
+
+- name: nomad | symlink binary
+  become: true
+  file:
+    src: "{{ base_dir['packages'] }}/nomad/{{ nomad['version'] }}/nomad"
+    path: "{{ base_dir['binaries'] }}/nomad"
+    state: link

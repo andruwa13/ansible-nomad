@@ -1,0 +1,6 @@
+vault {
+  enabled          = {{ vault['enabled'] | bool | lower }}
+  address          = "{{ vault['address'] | default('http://127.0.0.1:8200') }}"
+  token            = "{{ vault['token'] | default('') }}"
+  create_from_role = "nomad-cluster"
+}

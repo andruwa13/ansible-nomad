@@ -1,29 +1,11 @@
 ---
-# tasks file for roles/nomad
 
-- name: only run if os is supported
-  block:
+- include: _assert.yml
 
-  - include_vars: coreos.yml
-    when: ansible_service_mgr == "systemd"
+- include_vars: coreos.yml
 
-  - include: nomad-download.yml
-    tags: download
-
-  - include: nomad-install.yml
-    tags: install
-
-  - block:
-
-    - include: nomad-cfg_user.yml
-      tags: optional
-
-    - include: nomad-cfg_systemd.yml
-      tags: optional
-
-    - include: nomad-cfg_server.yml
-      tags: optional
-
-    when: nomad['server'] or nomad['client']
-
-  when: ansible_service_mgr == "systemd"
+- include: _download.yml
+- include: _folders.yml
+- include: _install.yml
+- include: _configure.yml
+- include: _initialize.yml

@@ -1,0 +1,18 @@
+bind_addr = "0.0.0.0"
+
+region = "{{ nomad['region'] | default('global') }}"
+datacenter = "{{ nomad['datacenter'] | default('dc1') }}"
+
+data_dir = "{{ base_dir['data'] }}/nomad/data"
+
+advertise {
+  http = "{{ ansible_default_ipv4['address'] }}"
+  rpc  = "{{ ansible_default_ipv4['address'] }}"
+  serf = "{{ ansible_default_ipv4['address'] }}"
+}
+
+ports {
+  http = 4646
+  rpc  = 4647
+  serf = 4648
+}

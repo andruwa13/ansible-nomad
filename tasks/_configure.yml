@@ -1,0 +1,50 @@
+---
+
+- name: nomad | template base configuration
+  become: true
+  notify:
+  - reload_systemd_daemon
+  template:
+    dest: "{{ base_dir['configs'] }}/nomad.d/{{ item }}"
+    src: "{{ item }}.j2"
+    owner: "root"
+    group: "root"
+    mode: 0644
+  loop:
+  - 50-acl.hcl
+  - 50-autopilot.hcl
+  - 50-client.hcl
+  - 50-consul.hcl
+  - 50-nomad.hcl
+  - 50-server.hcl
+  - 50-telemetry.hcl
+  - 50-tls.hcl
+  - 50-vault.hcl
+
+- name: nomad | template unit definition
+  become: true
+  notify:
+  - reload_systemd_daemon
+  - restart_unit_nomad
+  template:
+    dest: "{{ base_dir['systemd'] }}/{{ item }}"
+    src: "{{ item }}.j2"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+  - nomad.service
+
+- name: nomad | template unit overrides
+  become: true
+  notify:
+  - reload_systemd_daemon
+  - restart_unit_nomad
+  template:
+    dest: "{{ base_dir['systemd'] }}/nomad.service.d/{{ item }}"
+    src: "{{ item }}.j2"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+  - override.conf

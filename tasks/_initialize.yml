@@ -1,0 +1,14 @@
+#
+# Configures the nomad server
+#
+---
+
+- name: nomad | start and enable unit
+  become: true
+  notify:
+  - reload_systemd_daemon
+  systemd:
+    name: nomad
+    state: started
+    enabled: yes
+    masked: no
