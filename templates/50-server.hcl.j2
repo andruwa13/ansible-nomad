@@ -1,5 +1,6 @@
 server {
   enabled = {{ nomad['server'] | bool | lower }}
+{% if nomad['server'] | bool | lower %}
   raft_protocol = 3
   bootstrap_expect = {{ bootstrap['expect'] | default('1') }}
 {% if encryption['enabled'] %}
@@ -10,5 +11,6 @@ server {
     retry_join = {{ bootstrap['address'] | default('0.0.0.0') | to_json }}
     retry_interval = "15s"
   }
+{% endif %}
 {% endif %}
 }
