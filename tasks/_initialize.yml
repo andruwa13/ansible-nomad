@@ -1,6 +1,3 @@
-#
-# Configures the nomad server
-#
 ---
 
 - name: nomad | start and enable unit

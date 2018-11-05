@@ -29,7 +29,8 @@ consul:
 
 vault:
   enabled: false
-  address: "127.0.0.1:8200"
+  tls_skip: false
+  address: "http://127.0.0.1:8200"
   token: "SomeVaultToken"
 
 acl:

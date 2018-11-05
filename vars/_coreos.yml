@@ -10,4 +10,4 @@ base_dir:
   systemd: '/etc/systemd/system'
   data: '/var/lib'
   logs: '/var/log'
-  pid: '/var/run'
+  runtime: '/var/run'
