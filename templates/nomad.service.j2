@@ -13,11 +13,11 @@ After=vault.service
 {% endif %}
 
 [Service]
-KillMode=process
-KillSignal=SIGINT
 ExecStart={{ base_dir['binaries'] }}/nomad agent \
     -config {{ base_dir['configs'] }}/nomad.d
 ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+KillSignal=SIGINT
 Restart=on-failure
 RestartSec=4
 StartLimitBurst=8

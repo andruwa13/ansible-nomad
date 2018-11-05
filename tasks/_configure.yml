@@ -24,7 +24,6 @@
 - name: nomad | template unit definition
   become: true
   notify:
-  - reload_systemd_daemon
   - restart_unit_nomad
   template:
     dest: "{{ base_dir['systemd'] }}/{{ item }}"
@@ -35,16 +34,15 @@
   loop:
   - nomad.service
 
-- name: nomad | template unit overrides
-  become: true
-  notify:
-  - reload_systemd_daemon
-  - restart_unit_nomad
-  template:
-    dest: "{{ base_dir['systemd'] }}/nomad.service.d/{{ item }}"
-    src: "{{ item }}.j2"
-    owner: root
-    group: root
-    mode: 0644
-  loop:
-  - override.conf
+#- name: nomad | template unit overrides
+#  become: true
+#  notify:
+#  - restart_unit_nomad
+#  template:
+#    dest: "{{ base_dir['systemd'] }}/nomad.service.d/{{ item }}"
+#    src: "{{ item }}.j2"
+#    owner: root
+#    group: root
+#    mode: 0644
+#  loop:
+#  - override.conf

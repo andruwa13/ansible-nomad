@@ -9,6 +9,6 @@
   - reload_systemd_daemon
   systemd:
     name: nomad
-    state: started
-    enabled: yes
     masked: no
+    enabled: yes
+    state: started
