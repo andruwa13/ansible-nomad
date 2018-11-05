@@ -1,7 +1,7 @@
 server {
   enabled = {{ nomad['server'] | bool | lower }}
   raft_protocol = 3
-{% if nomad['server'] | bool | lower %}
+{% if nomad['server'] %}
   bootstrap_expect = {{ bootstrap['expect'] | default('1') }}
 {% endif %}
 {% if encryption['enabled'] %}
