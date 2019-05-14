@@ -1,13 +1,25 @@
 ---
-
+# ==============================================================================
 ## required settings
 
+# TODO: Separate variables to better integrate with awx/ansible tower
+#nomad_version: "0.9.1"
+#nomad_server: true
+#nomad_client:
+#  enabled: false
+#  driver_blacklist: ""
+#nomad_bootstrap:
+#  expect: 3
+#  address:
+#  - 10.0.0.1
+#  - 10.0.0.2
+#  - 10.0.0.3
+
 nomad:
-  version: "0.8.6"
+  version: "0.9.1"
   server: true
   client:
     enabled: false
-    driver_blacklist: ""
 
 bootstrap:
   expect: 3
@@ -16,6 +28,7 @@ bootstrap:
   - 10.0.0.2
   - 10.0.0.3
 
+# ==============================================================================
 ## Optional settings
 
 encryption:

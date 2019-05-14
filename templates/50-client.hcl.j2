@@ -1,8 +1,5 @@
 client {
   enabled = {{ nomad['client']['enabled'] | default(false) | bool | lower }}
-  options = {
-    "driver.blacklist" = "{{ nomad['driver_blacklist'] | default('') }}"
-  }
   meta {
     "managed_by" = "ansible"
   }
@@ -10,8 +7,8 @@ client {
   node_class = "server"
   reserved {
     cpu    = 500
-    memory = 512
-    disk   = 2048
+    memory = 500
+    disk   = 2500
   }
 {% else %}
   node_class = "client"

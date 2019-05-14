@@ -11,15 +11,15 @@
     group: "root"
     mode: 0644
   loop:
+  - 50-nomad.hcl
   - 50-acl.hcl
   - 50-autopilot.hcl
   - 50-client.hcl
   - 50-consul.hcl
-  - 50-nomad.hcl
   - 50-server.hcl
-  - 50-telemetry.hcl
   - 50-tls.hcl
   - 50-vault.hcl
+  - 50-telemetry.hcl
 
 - name: nomad | template unit definition
   become: true

@@ -1,8 +1,8 @@
 server {
-  enabled = {{ nomad['server'] | bool | lower }}
+  enabled = {{ nomad['server'] | default(false) | bool | lower }}
   raft_protocol = 3
 {% if nomad['server'] %}
-  bootstrap_expect = {{ bootstrap['expect'] | default('1') }}
+  bootstrap_expect = {{ bootstrap['expect'] | default(1) }}
 {% endif %}
 {% if encryption['enabled'] %}
   encrypt = "{{ encryption['key'] | default('SuperSecretKey') }}"

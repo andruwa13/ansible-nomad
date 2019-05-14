@@ -1,10 +1,15 @@
+{% if consul['enabled'] | default(false) | bool | lower %}
 consul {
   address              = "{{ consul['address'] | default('127.0.0.1:8500') }}"
   token                = "{{ consul['token'] | default('ConsulSecretToken') }}"
   checks_use_advertise = true
   auto_advertise       = true
   server_auto_join     = true
+  client_auto_join     = true
   client_service_name  = "nomad-client"
   server_service_name  = "nomad-server"
   auth                 = ""
 }
+{% else %}
+# Consul not enabled
+{% endif %}

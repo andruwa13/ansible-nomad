@@ -1,11 +1,17 @@
 ---
 
 - include: _assert.yml
-
 - include_vars: _coreos.yml
 
-- include: _download.yml
-- include: _folders.yml
-- include: _install.yml
-- include: _configure.yml
-- include: _initialize.yml
+- name: Nomad | check if version already installed
+  stat:
+    path: "{{ base_dir['packages'] }}/nomad/{{ nomad['version'] }}"
+  register: version_exists
+
+- block:
+  - include: _download.yml
+  - include: _folders.yml
+  - include: _install.yml
+  - include: _configure.yml
+  - include: _initialize.yml
+  when: not version_exists['stat']['exists']

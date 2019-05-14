@@ -9,6 +9,8 @@
 
 - name: nomad | symlink binary
   become: true
+  notify:
+  - restart_unit_nomad
   file:
     src: "{{ base_dir['packages'] }}/nomad/{{ nomad['version'] }}/nomad"
     path: "{{ base_dir['binaries'] }}/nomad"

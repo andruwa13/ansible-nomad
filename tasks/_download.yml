@@ -6,23 +6,14 @@
     path: "{{ base_dir['downloads'] }}/{{ package_name_nomad }}.zip"
   register: package_status_nomad
 
-- name: nomad | download package
-  block:
-
-  - name: nomad | get package checksum
-    run_once: true
-    become: false
-    local_action: shell curl -s "{{ checksum_url_nomad }}" | grep -i "{{ package_name_nomad }}.zip" | awk '{print $1}'
-    args:
-      warn: false
-    register: sha256_nomad
+- block:
 
   - name: nomad | download package
     become: false
     get_url:
       url: "{{ package_url_nomad }}"
       dest: "{{ base_dir['downloads'] }}"
-      checksum: "sha256:{{ sha256_nomad['stdout'] }}"
+      checksum: "sha256:{{ checksum_url_nomad }}"
       validate_certs: false
     register: download_status_nomad
 
