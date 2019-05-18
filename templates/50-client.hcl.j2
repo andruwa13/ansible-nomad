@@ -5,8 +5,8 @@ client {
   }
 {% if nomad_legacy_driver_settings %}
   options = {
-    "driver.whitelist" = {{ nomad_client_driver_whitelist }}
-    "driver.blacklist" = {{ nomad_client_driver_blacklist }}
+    "driver.whitelist" = {{ nomad_client_driver_whitelist | default("") }}
+    "driver.blacklist" = {{ nomad_client_driver_blacklist | default("")}}
   }
 {% endif %}
 {% if nomad_server %}
