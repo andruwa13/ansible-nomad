@@ -1,7 +1,29 @@
 ---
 
-- include: _assert.yml
-- include_vars: _coreos.yml
+# ==============================================================================
+#  Check if os is supported by role
+# ==============================================================================
+
+- include: assert_os.yml
+
+# ==============================================================================
+#  Include variables based on operating system
+# ==============================================================================
+
+#- name: include variables based on operating system
+#  include_vars: "{{ lookup('first_found',possible_files) }}"
+#  vars:
+#    possible_files:
+#    - "{{ ansible_distribution | lower }}.yml"
+#    - "{{ ansible_os_family | lower }}.yml"
+#    - default.yml
+- include_vars: default.yml
+
+# ==============================================================================
+#  Install only if requested version doesn't already exist
+# ==============================================================================
+
+#- include: assert_installed.yml
 
 - name: Nomad | check if version already installed
   stat:
@@ -9,9 +31,14 @@
   register: version_exists
 
 - block:
-  - include: _download.yml
-  - include: _folders.yml
-  - include: _install.yml
-  - include: _configure.yml
-  - include: _initialize.yml
+  - include: download.yml
+  - include: folders.yml
+  - include: install.yml
   when: not version_exists['stat']['exists']
+
+# ==============================================================================
+#  Configure service
+# ==============================================================================
+
+- include: configure.yml
+- include: initialize.yml

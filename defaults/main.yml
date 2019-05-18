@@ -2,62 +2,39 @@
 # ==============================================================================
 ## required settings
 
-# TODO: Separate variables to better integrate with awx/ansible tower
-#nomad_version: "0.9.1"
-#nomad_server: true
-#nomad_client:
-#  enabled: false
-#  driver_blacklist: ""
-#nomad_bootstrap:
-#  expect: 3
-#  address:
-#  - 10.0.0.1
-#  - 10.0.0.2
-#  - 10.0.0.3
-
-nomad:
-  version: "0.9.1"
-  server: true
-  client:
-    enabled: false
-
-bootstrap:
-  expect: 3
-  address:
-  - 10.0.0.1
-  - 10.0.0.2
-  - 10.0.0.3
+nomad_version: "0.9.1"
+nomad_server: true
+nomad_client_enabled: false
+nomad_bootstrap_expect: 1
+nomad_bootstrap_address: ["127.0.0.1"]
+nomad_legacy_driver_settings: false
+nomad_client_driver_whitelist: ""
+nomad_client_driver_blacklist: ""
 
 # ==============================================================================
 ## Optional settings
+# ==============================================================================
 
-encryption:
-  enabled: false
-  key: "SomeNomadEncryptionKey"
+encryption_enabled: false
+encryption_key: "SomeNomadEncryptionKey"
 
-consul:
-  enabled: false
-  address: "127.0.0.1:8500"
-  token: "SomeConsulToken"
+consul_enabled: false
+consul_address: "127.0.0.1:8500"
+consul_token: "SomeConsulToken"
 
-vault:
-  enabled: false
-  tls_skip: false
-  address: "http://127.0.0.1:8200"
-  token: "SomeVaultToken"
+vault_enabled: false
+vault_tls_skip: false
+vault_address: "http://127.0.0.1:8200"
+vault_token: "SomeVaultToken"
 
-acl:
-  enabled: false
-  token: "SomeACLToken"
+acl_enabled: false
+acl_token: "SomeACLToken"
 
-tls:
-  http: false
-  rpc: false
-  files:
-    ca: "/etc/certs/ca.crt"
-    cert: "/etc/certs/nomad.crt"
-    key: "/etc/certs/nomad.key"
+tls_http: false
+tls_rpc: false
+tls_ca: /etc/certs/ca.crt
+tls_cert: /etc/certs/nomad.crt
+tls_key: /etc/certs/nomad.key
 
-telemetry:
-  interval: "5s"
-  prometheus: false
+telemetry_interval: "10s"
+telemetry_prometheus: false

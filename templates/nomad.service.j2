@@ -3,18 +3,10 @@ Description="HashiCorp Nomad"
 Documentation=https://nomadproject.io/docs/
 Wants=network-online.target
 After=network-online.target
-{% if consul['enabled']  %}
-Wants=consul.service
-After=consul.service
-{% endif %}
-{% if vault['enabled']  %}
-Wants=vault.service
-After=vault.service
-{% endif %}
 
 [Service]
-ExecStart={{ base_dir['binaries'] }}/nomad agent \
-    -config {{ base_dir['configs'] }}/nomad.d/
+ExecStart={{ os_dir_binaries }}/nomad agent \
+    -config {{ os_dir_config }}/nomad.d/
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 KillSignal=SIGINT

@@ -5,7 +5,7 @@
   notify:
   - reload_systemd_daemon
   template:
-    dest: "{{ base_dir['configs'] }}/nomad.d/{{ item }}"
+    dest: "{{ os_dir_config }}/nomad.d/{{ item }}"
     src: "{{ item }}.j2"
     owner: "root"
     group: "root"
@@ -27,7 +27,7 @@
   - restart_unit_nomad
   - reload_systemd_daemon
   template:
-    dest: "{{ base_dir['systemd'] }}/{{ item }}"
+    dest: "{{ os_dir_systemd }}/{{ item }}"
     src: "{{ item }}.j2"
     owner: root
     group: root

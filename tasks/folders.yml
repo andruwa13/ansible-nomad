@@ -9,10 +9,10 @@
     group: root
     mode: 0755
   loop:
-  - "{{ base_dir['configs'] }}/nomad.d"
-  - "{{ base_dir['binaries'] }}"
-  - "{{ base_dir['packages'] }}/nomad/{{ nomad['version'] }}"
-#  - "{{ base_dir['systemd'] }}/nomad.service.d"
+  - "{{ os_dir_config }}/nomad.d"
+  - "{{ os_dir_binaries }}"
+  - "{{ os_dir_packages }}/nomad/{{ nomad_version }}"
+  - "{{ os_dir_systemd }}/nomad.service.d"
 
 - name: nomad | create application folders
   become: true
@@ -23,6 +23,6 @@
     group: root
     mode: 0755
   loop:
-  - "{{ base_dir['data'] }}/nomad"
-  - "{{ base_dir['logs'] }}/nomad"
-  - "{{ base_dir['runtime'] }}/nomad"
+  - "{{ os_dir_data }}/nomad"
+  - "{{ os_dir_logs }}/nomad"
+  - "{{ os_dir_runtime }}/nomad"

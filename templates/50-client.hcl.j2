@@ -1,21 +1,27 @@
 client {
-  enabled = {{ nomad['client']['enabled'] | default(false) | bool | lower }}
+  enabled = {{ nomad_client_enabled | default(false) | bool | lower }}
   meta {
     "managed_by" = "ansible"
   }
-{% if nomad['server'] %}
+{% if nomad_legacy_driver_settings %}
+  options = {
+    "driver.whitelist" = {{ nomad_client_driver_whitelist }}
+    "driver.blacklist" = {{ nomad_client_driver_blacklist }}
+  }
+{% endif %}
+{% if nomad_server %}
   node_class = "server"
   reserved {
-    cpu    = 500
     memory = 500
+    cpu    = 500
     disk   = 2500
   }
 {% else %}
   node_class = "client"
 {% endif %}
-{% if not consul['enabled'] %}
+{% if not consul_enabled %}
   server_join {
-    retry_join = {{ bootstrap['address'] | default('0.0.0.0') | to_json }}
+    retry_join = {{ bootstrap_address | default('0.0.0.0') | to_json }}
     retry_interval = "15s"
   }
 {% endif %}

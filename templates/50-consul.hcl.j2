@@ -1,7 +1,7 @@
-{% if consul['enabled'] | default(false) | bool | lower %}
+{% if consul_enabled | default(false) | bool | lower %}
 consul {
-  address              = "{{ consul['address'] | default('127.0.0.1:8500') }}"
-  token                = "{{ consul['token'] | default('ConsulSecretToken') }}"
+  address              = "{{ consul_address | default('127.0.0.1:8500') }}"
+  token                = "{{ consul_token | default('ConsulSecretToken') }}"
   checks_use_advertise = true
   auto_advertise       = true
   server_auto_join     = true

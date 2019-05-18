@@ -1,7 +1,7 @@
 vault {
-  enabled          = {{ vault['enabled'] | default(false) | bool | lower }}
-  tls_skip_verify  = {{ vault['tls_skip'] | default(false) | bool | lower }}
-  address          = "{{ vault['address'] | default('http://127.0.0.1:8200') }}"
-  token            = "{{ vault['token'] | default('') }}"
+  enabled          = {{ vault_enabled | default(false) | bool | lower }}
+  tls_skip_verify  = {{ vault_tls_skip | default(false) | bool | lower }}
+  address          = "{{ vault_address | default('http://127.0.0.1:8200') }}"
+  token            = "{{ vault_token | default('') }}"
   create_from_role = "nomad-cluster"
 }
