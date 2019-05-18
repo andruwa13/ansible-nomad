@@ -27,7 +27,7 @@
 
 - name: Nomad | check if version already installed
   stat:
-    path: "{{ base_dir['packages'] }}/nomad/{{ nomad['version'] }}"
+    path: "{{ os_dir_packages }}/nomad/{{ nomad_version }}"
   register: version_exists
 
 - block:
