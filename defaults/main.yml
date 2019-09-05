@@ -1,6 +1,7 @@
 ---
 # ==============================================================================
-## required settings
+#                                                              Required settings
+# ==============================================================================
 
 nomad_version: "0.9.1"
 nomad_server: true
@@ -8,12 +9,17 @@ nomad_client_enabled: false
 nomad_bootstrap_expect: 1
 nomad_bootstrap_address: ["127.0.0.1"]
 nomad_legacy_driver_settings: false
-nomad_client_driver_whitelist: ""
-nomad_client_driver_blacklist: ""
 
 # ==============================================================================
-## Optional settings
+#                                                              Optional settings
 # ==============================================================================
+
+nomad_client_reserved_cpu: 0
+nomad_client_reserved_memory: 0
+nomad_client_reserved_disk: 0
+nomad_client_driver_whitelist: ""
+nomad_client_driver_blacklist: ""
+nomad_client_meta: {}
 
 encryption_enabled: false
 encryption_key: "SomeNomadEncryptionKey"
