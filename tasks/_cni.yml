@@ -1,0 +1,137 @@
+---
+
+- name: CNI | Include variables
+  include_vars:
+    file: _cni.yml
+
+# ==============================================================================
+#   Folders
+# ==============================================================================
+
+- name: CNI | Check folders
+  stat:
+    path: "{{ item }}"
+  loop:
+    - "{{ cni.path }}"
+  register: cni_folder_status
+
+- name: CNI | Create folders
+  become: true
+  file:
+    dest: "{{ item.item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: not item.stat.exists | bool
+  loop: "{{ cni_folder_status.results }}"
+
+# ==============================================================================
+#   Checks
+# ==============================================================================
+
+- name: CNI | Check if already installed
+  become: true
+  stat:
+    path: "{{ cni.path }}/VERSION"
+  register: cni_installed
+
+- name: CNI | Check installed version
+  become: true
+  check_mode: true
+  changed_when: false
+  lineinfile:
+    path: "{{ cni.path }}/VERSION"
+    line: "CNI Release: v{{ cni.version }}"
+  register: cni_status
+  when: cni_installed.stat.exists
+
+# ==============================================================================
+#   Download & unpack
+# ==============================================================================
+
+- name: CNI | Download release
+  block:
+
+    - name: CNI | Check if archive exists on disk
+      stat:
+        path: "{{ path.temp }}/{{ package_name_cni }}.tgz"
+      register: cni_archive_status
+
+    - name: CNI | Download archive
+      get_url:
+        url: "{{ package_url_cni }}"
+        dest: "{{ path.temp }}"
+        checksum: "sha256:{{ package_url_cni }}.sha256"
+        validate_certs: false
+      register: download_status_cni
+      when: not cni_archive_status.stat.exists
+
+    - name: CNI | Extract binaries
+      become: true
+      unarchive:
+        src: "{{ path.temp }}/{{ package_name_cni }}.tgz"
+        dest: "{{ cni.path }}"
+        remote_src: yes
+
+    - name: CNI | Update installed version
+      become: true
+      copy:
+        content: "CNI Release: v{{ cni.version }}"
+        dest: "{{ cni.path }}/VERSION"
+        owner: "root"
+        group: "root"
+        mode: 0644
+
+  when: >
+    not cni_installed.stat.exists or
+    cni_status.changed or
+    cni.force
+
+# ==============================================================================
+#   Configure
+# ==============================================================================
+
+# https://wiki.libvirt.org/page/Net.bridge.bridge-nf-call_and_sysctl.conf
+- name: CNI | Configure kernel tunables
+  block:
+
+    - name: CNI | Enable kernel module(s)
+      become: true
+      ignore_errors: true
+      modprobe:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - br_netfilter
+
+    - name: CNI | Manage tunables configuration
+      become: true
+      ignore_errors: true
+      lineinfile:
+        path: "/proc/sys/net/bridge/bridge-nf-call-{{ item }}"
+        create: true
+        line: 1
+        state: present
+      loop:
+        - arptables
+        - ip6tables
+        - iptables
+
+    - name: CNI | Configure tunables (bridge networking)
+      become: true
+      ignore_errors: true
+      sysctl:
+        name: "net.bridge.bridge-nf-call-{{ item }}"
+        value: 1
+        ignoreerrors: true
+        state: present
+        sysctl_file: "{{ cni.path_tunables }}/50-cni.conf"
+        sysctl_set: true
+        reload: true
+      loop:
+        - arptables
+        - ip6tables
+        - iptables
+
+  when: cni.set_tunables

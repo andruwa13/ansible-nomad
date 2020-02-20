@@ -1,4 +1,0 @@
-acl {
-  enabled = {{ acl_enabled | default(false) | bool | lower }}
-  replication_token = "{{ acl_token | default('') }}"
-}

@@ -1,7 +1,0 @@
-tls {
-  http      = "{{ tls_http | default(false) | bool | lower }}"
-  rpc       = "{{ tls_rpc | default(false) | bool | lower }}"
-  ca_file   = "{{ tls_ca | default('') }}"
-  cert_file = "{{ tls_cert | default('') }}"
-  key_file  = "{{ tls_key | default('') }}"
-}

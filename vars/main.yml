@@ -1,21 +1,59 @@
 ---
 # ==============================================================================
-# Constants
+#   General settings
 # ==============================================================================
 
-assert_os_supported:
-  - Container Linux by CoreOS
-  - VMware Photon OS
-hashicorp_base_url: "https://releases.hashicorp.com"
-base_architecture_map:
+application: "nomad"
+
+os_arch_map:
   amd64: "amd64"
   x86_64: "amd64"
+  64-bit: "amd64"
+
+host_arch: "{{ os_arch_map[ansible_architecture] | lower }}"
 
 # ==============================================================================
-# Host-specific
+#   Base URLs
 # ==============================================================================
 
-host_architecture: "{{ base_architecture_map[ansible_architecture] | lower }}"
-package_name_nomad: "nomad_{{ nomad_version }}_{{ ansible_system | lower }}_{{ host_architecture | lower }}"
-package_url_nomad:  "{{ hashicorp_base_url }}/nomad/{{ nomad_version }}/{{ package_name_nomad }}.zip"
-checksum_url_nomad: "{{ hashicorp_base_url }}/nomad/{{ nomad_version }}/nomad_{{ nomad_version }}_SHA256SUMS"
+hashicorp_releases_url: "https://releases.hashicorp.com"
+package_name: "{{ application }}_{{ version }}_{{ ansible_system | lower }}_{{ host_arch | lower }}"
+package_url: "{{ hashicorp_releases_url }}/{{ application }}/{{ version }}/{{ package_name }}.zip"
+checksum_url: "{{ hashicorp_releases_url }}/{{ application }}/{{ version }}/{{ application }}_{{ version }}_SHA256SUMS"
+
+# ==============================================================================
+#   Default application configuration
+#     Any settings from default.yml -> 'config_overrides' will be merged with
+#     settings from this variable.
+#     Settings with no value will use defaults from consul binary.
+# ==============================================================================
+
+config_defaults:
+  bind_addr: "{{ ansible_default_ipv4.address }}"
+  name: "{{ ansible_hostname }}"
+  data_dir: "{{ path.storage }}/{{ application }}/data"
+
+config: "{{ config_defaults | combine(config_overrides, recursive=true) }}"
+
+# ==============================================================================
+#   Default paths
+#   Any settings from default.yml -> 'path_overrides' will be merged with
+#   settings from this variable.
+# ==============================================================================
+
+path_defaults:
+  binaries: /usr/sbin
+  logs: /var/opt/log
+  packages: /opt
+  profile: /etc/profile.d
+  runtime: /var/run
+  settings: /etc/opt
+  storage: /var/opt
+  systemd: /etc/systemd/system
+  temp: /tmp
+
+path: "{{ path_defaults | combine(path_overrides, recursive=true) }}"
+
+# ==============================================================================
+#   Extra settings
+# ==============================================================================

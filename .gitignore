@@ -1,1 +1,5 @@
-.trash
+.terraform/
+.trash/
+*.tfvars
+*.tfstate
+*.backup
