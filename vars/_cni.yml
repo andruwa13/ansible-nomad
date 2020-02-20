@@ -1,0 +1,13 @@
+# Variables used by Container Network Interface (CNI)
+---
+cni_defaults:
+  force: false
+  version: "0.8.5"
+  path: /opt/cni/bin
+  set_tunables: false
+  path_tunables: /etc/sysctl.d
+
+cni: "{{ cni_defaults | combine(cni_overrides, recursive=true) }}"
+
+package_name_cni: "cni-plugins-{{ ansible_system | lower }}-{{ host_arch | lower }}-v{{ cni.version }}"
+package_url_cni: "https://github.com/containernetworking/plugins/releases/download/v{{ cni.version }}/{{ package_name_cni }}.tgz"

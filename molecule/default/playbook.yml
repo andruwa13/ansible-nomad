@@ -1,0 +1,24 @@
+---
+
+- name: install nomad
+  hosts: all
+  gather_facts: false
+
+  pre_tasks:
+    - name: Ansible and docker pre-requirements
+      become: true
+      package:
+        name:
+          - iproute
+        state: present
+
+  tasks:
+
+    - include_role:
+        name: nomad
+      vars:
+        config_overrides:
+          server:
+            enabled: true
+            bootstrap_expect: 1
+        configure_cni: true

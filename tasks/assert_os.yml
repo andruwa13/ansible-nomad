@@ -1,7 +1,0 @@
----
-
-- name: Check os compatibility
-  fail:
-    msg: "{{ ansible_distribution }} is not supported by this role."
-  when:
-    - ansible_distribution not in assert_os_supported

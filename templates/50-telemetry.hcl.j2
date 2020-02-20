@@ -1,6 +1,0 @@
-telemetry {
-  publish_allocation_metrics = true
-  publish_node_metrics       = true
-  collection_interval        = "{{ telemetry_interval | default('5s') }}"
-  prometheus_metrics         = "{{ telemetry_prometheus | default(false) | bool | lower }}"
-}
