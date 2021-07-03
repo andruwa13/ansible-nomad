@@ -9,6 +9,7 @@ os_arch_map:
   amd64: "amd64"
   x86_64: "amd64"
   64-bit: "amd64"
+  aarch64: "arm64"
 
 host_arch: "{{ os_arch_map[ansible_architecture] | lower }}"
 
